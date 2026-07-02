@@ -1,0 +1,23 @@
+# INDIA.RUNS 2026 — RedrRob AI Challenge
+# Production Requirements
+
+# ── Core data science ─────────────────────────────────────────────────────────
+numpy>=1.26.0
+pandas>=2.2.0
+pyarrow>=15.0.0          # parquet I/O
+
+# ── Visualization (for notebooks only) ───────────────────────────────────────
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# ── Notebook tooling ──────────────────────────────────────────────────────────
+notebook>=7.0.0
+nbformat>=5.9.0
+nbclient>=0.9.0
+tqdm>=4.66.0
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest>=8.0.0
+
+# ── Type checking (optional, dev only) ────────────────────────────────────────
+# mypy>=1.8.0
