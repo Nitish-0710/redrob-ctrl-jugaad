@@ -275,52 +275,52 @@ graph TD
 The project code is organized as a clean, production-grade package inside the `merged/` directory:
 
 ```text
-merged/
-├── configs/                    # Configuration Layer (Single Source of Truth)
-│   ├── __init__.py             # Exposes paths and settings
-│   ├── paths.py                # Defines workspace input/output paths
-│   ├── settings.py             # Global execution configurations (encoding, chunk size, loggers)
-│   ├── feature_config.py       # Taxonomy lists, thresholds, honeypot bounds
-│   ├── skill_taxonomy.py       # Hierarchical taxonomy v2 groups, keywords, stages
-│   └── ranking_config.py       # Core scorer component weights and normalization bounds
-├── src/                        # Core Source Code Package
-│   ├── __init__.py             # Package init
-│   ├── data/                   # Data I/O, Parsing, and Validation Layer
-│   │   ├── __init__.py
-│   │   ├── loader.py           # O(1) streaming JSONL loader
-│   │   ├── parser.py           # Strong schema parsing to Candidate object
-│   │   └── validators.py       # Consistency, schema, and honeypot validation
-│   ├── features/               # Feature Extraction and Engineering Layer
-│   │   ├── __init__.py
-│   │   └── candidate_features.py # 62-dimensional FeatureVector generation
-│   ├── ranking/                # Job Description & Candidate Scoring Engines
-│   │   ├── __init__.py
-│   │   ├── jd_parser.py        # Maps static JD requirements to query vector
-│   │   └── scorer.py           # Implements the multi-dimensional weighted scorer
-│   ├── reasoning/              # Explainability Generation Layer
-│   │   ├── __init__.py
-│   │   ├── generate_examples.py # Generates local samples for diagnostic purposes
-│   │   └── generator.py        # Factual template-based reasoning generation
-│   ├── submission/             # Submission Pipeline Orchestrator
-│   │   └── builder.py          # Orchestrates streams, scores, ranks, and writes files
-│   └── utils/                  # Core Utilities and Helpers
-│       ├── __init__.py
-│       ├── io.py               # Optimized DataFrame Parquet read/write utilities
-│       └── misc.py             # Numeric helpers (clamp, normalize, safe_divide)
-├── tests/                      # PyTest Unit Testing Suite
-│   ├── __init__.py
-│   ├── test_parser.py          # Unit tests for JSON to Dataclass parser
-│   ├── test_validators.py      # Unit tests for Honeypots and schema checks
-│   ├── test_candidate_features.py # Unit tests for feature extraction
-│   ├── test_scorer.py          # Unit tests for multi-dimensional scorer
-│   └── test_reasoning.py       # Unit tests for recruiter reasoning outputs
-├── outputs/                    # Output Reports and Submissions
-│   ├── submission.csv          # Final target submission output (Top 100)
-│   ├── submission_preview.csv  # Top 25 rows preview for quick review
-│   ├── submission_validation.md# Validation report confirming format compliance
-│   ├── final_submission_report.md# Aggregate statistics and archetype distributions
-│   └── top100_explainability_audit.md# Tabular explainability spreadsheet
-└── run_tests_unittest.py       # Standard-library wrapper for executing testing suite
+
+configs/                        # Configuration Layer (Single Source of Truth)
+    ├── __init__.py             # Exposes paths and settings
+    ├── paths.py                # Defines workspace input/output paths
+    ├── settings.py             # Global execution configurations (encoding, chunk size, loggers)
+    ├── feature_config.py       # Taxonomy lists, thresholds, honeypot bounds
+    ├── skill_taxonomy.py       # Hierarchical taxonomy v2 groups, keywords, stages
+    └── ranking_config.py       # Core scorer component weights and normalization bounds
+src/                            # Core Source Code Package
+    ├── __init__.py             # Package init
+    ├── data/                   # Data I/O, Parsing, and Validation Layer
+    │   ├── __init__.py
+    │   ├── loader.py           # O(1) streaming JSONL loader
+    │   ├── parser.py           # Strong schema parsing to Candidate object
+    │   └── validators.py       # Consistency, schema, and honeypot validation
+    ├── features/               # Feature Extraction and Engineering Layer
+    │   ├── __init__.py
+    │   └── candidate_features.py # 62-dimensional FeatureVector generation
+    ├── ranking/                # Job Description & Candidate Scoring Engines
+    │   ├── __init__.py
+    │   ├── jd_parser.py        # Maps static JD requirements to query vector
+    │   └── scorer.py           # Implements the multi-dimensional weighted scorer
+    ├── reasoning/              # Explainability Generation Layer
+    │   ├── __init__.py
+    │   ├── generate_examples.py # Generates local samples for diagnostic purposes
+    │   └── generator.py        # Factual template-based reasoning generation
+    ├── submission/             # Submission Pipeline Orchestrator
+    │   └── builder.py          # Orchestrates streams, scores, ranks, and writes files
+    └── utils/                  # Core Utilities and Helpers
+        ├── __init__.py
+        ├── io.py               # Optimized DataFrame Parquet read/write utilities
+        └── misc.py             # Numeric helpers (clamp, normalize, safe_divide)
+tests/                          # PyTest Unit Testing Suite
+    ├── __init__.py
+    ├── test_parser.py          # Unit tests for JSON to Dataclass parser
+    ├── test_validators.py      # Unit tests for Honeypots and schema checks
+    ├── test_candidate_features.py # Unit tests for feature extraction
+    ├── test_scorer.py          # Unit tests for multi-dimensional scorer
+    └── test_reasoning.py       # Unit tests for recruiter reasoning outputs
+outputs/                        # Output Reports and Submissions
+    ├── submission.csv          # Final target submission output (Top 100)
+    ├── submission_preview.csv  # Top 25 rows preview for quick review
+    ├── submission_validation.md# Validation report confirming format compliance
+    ├── final_submission_report.md# Aggregate statistics and archetype distributions
+    └── top100_explainability_audit.md# Tabular explainability spreadsheet
+    run_tests_unittest.py       # Standard-library wrapper for executing testing suite
 ```
 
 ---
@@ -426,23 +426,26 @@ Where $\text{evidence}_d = \log(1 + \text{count}_d)$ and $\text{Normalize}(v, \t
 #### 2. Blended Skill Score ($S_{\text{skill}}$)
 Combines original self-reported proficiency and endorsements with the Nitish v2 advanced capability and pipeline coverage metrics:
 
-$$S_{\text{skill\_orig}} = 0.7 \times \text{Normalize}(P, 0.0, 30.0) + 0.3 \times \text{Normalize}(E, 0.0, 1500.0)$$
+$$S_{\text{skill\\_orig}} = 0.7 \times \text{Normalize}(P, 0.0, 30.0) + 0.3 \times \text{Normalize}(E, 0.0, 1500.0)$$
 
-Where $P = \sum_{s \in \text{Core}} \text{Weight}_{\text{proficiency}}(s)$, and $E = \sum_{s \in \text{Core}} \text{Weight}_{\text{proficiency}}(s) \times \min(\text{endorsements}_s, 50)$.
+Where 
+$$P = \sum_{s \in \text{Core}} \text{Weight}_{\text{proficiency}}(s)$$, 
+and 
+$$E = \sum_{s \in \text{Core}} \text{Weight}_{\text{proficiency}}(s) \times \min(\text{endorsements}_s, 50)$$.
 
-$$S_{\text{skill}} = 0.5 \times S_{\text{skill\_orig}} + 0.3 \times \text{CapabilityScore} + 0.2 \times \text{PipelineScore}$$
+$$S_{\text{skill}} = 0.5 \times S_{\text{skill\\_orig}} + 0.3 \times \text{CapabilityScore} + 0.2 \times \text{PipelineScore}$$
 
 #### 3. Blended Experience Score ($S_{\text{experience}}$)
 Evaluates candidate seniority against the preferred range $[5.0, 12.0]$ years:
 
-$$S_{\text{exp\_orig}} = \begin{cases} 
+$$S_{\text{exp\\_orig}} = \begin{cases} 
       0.0 & \text{YoE} < 3.0 \\
       \max(0.0, 1.0 - (5.0 - \text{YoE}) \times 0.2) & 3.0 \le \text{YoE} < 5.0 \\
       1.0 & 5.0 \le \text{YoE} \le 12.0 \\
       \max(0.5, 1.0 - (\text{YoE} - 12.0) \times 0.05) & \text{YoE} > 12.0 
    \end{cases}$$
 
-$$S_{\text{experience}} = 0.5 \times S_{\text{exp\_orig}} + 0.3 \times \text{ExperienceQualityScore} + 0.2 \times \text{ProductionMLScore}$$
+$$S_{\text{experience}} = 0.5 \times S_{\text{exp\\_orig}} + 0.3 \times \text{ExperienceQualityScore} + 0.2 \times \text{ProductionMLScore}$$
 
 #### 4. Education Score ($S_{\text{education}}$)
 Weighted blend of degree relevance (CS/AI) and school tier weights (Tier 1 = 1.0, Tier 2 = 0.75, Tier 3 = 0.50, Tier 4 = 0.30, Unknown = 0.20):
@@ -462,10 +465,10 @@ $$S_{\text{verification}} = 0.2 \times V_{\text{email}} + 0.2 \times V_{\text{ph
 #### 7. Availability Score ($S_{\text{availability}}$)
 Calculates notice period decay scaled by explicit job interest:
 
-$$S_{\text{availability\_base}} = \max(0.0, 1.0 - \frac{\text{NoticePeriodDays} - 15}{90.0})$$
+$$S_{\text{availability\\_base}} = \max(0.0, 1.0 - \frac{\text{NoticePeriodDays} - 15}{90.0})$$
 
 $$S_{\text{availability}} = \begin{cases} 
-      \min(1.0, S_{\text{availability\_base}} \times 1.2) & \text{if } \text{OpenToWork} = \text{True} \\
+      \min(1.0, S_{\text{availability\\_base}} \times 1.2) & \text{if } \text{OpenToWork} = \text{True} \\
       S_{\text{availability\_base}} & \text{otherwise}
    \end{cases}$$
 
