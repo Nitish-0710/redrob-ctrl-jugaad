@@ -429,8 +429,11 @@ Combines original self-reported proficiency and endorsements with the Nitish v2 
 $$S_{\text{skill\\_orig}} = 0.7 \times \text{Normalize}(P, 0.0, 30.0) + 0.3 \times \text{Normalize}(E, 0.0, 1500.0)$$
 
 Where 
+
 $$P = \sum_{s \in \text{Core}} \text{Weight}_{\text{proficiency}}(s)$$, 
+
 and 
+
 $$E = \sum_{s \in \text{Core}} \text{Weight}_{\text{proficiency}}(s) \times \min(\text{endorsements}_s, 50)$$.
 
 $$S_{\text{skill}} = 0.5 \times S_{\text{skill\\_orig}} + 0.3 \times \text{CapabilityScore} + 0.2 \times \text{PipelineScore}$$
@@ -469,7 +472,7 @@ $$S_{\text{availability\\_base}} = \max(0.0, 1.0 - \frac{\text{NoticePeriodDays}
 
 $$S_{\text{availability}} = \begin{cases} 
       \min(1.0, S_{\text{availability\\_base}} \times 1.2) & \text{if } \text{OpenToWork} = \text{True} \\
-      S_{\text{availability\_base}} & \text{otherwise}
+      S_{\text{availability\\_base}} & \text{otherwise}
    \end{cases}$$
 
 #### 8. Multiplicative Trust Score ($T$)
