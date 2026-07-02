@@ -715,3 +715,11 @@ The sandbox accepts sample JSON/JSONL datasets (≤100 candidates), executes the
 The complete 100,000-candidate evaluation is performed locally using:
 
 python rank.py --candidates candidates.jsonl --out outputs/submission.csv
+
+--- 
+
+### Live Sandbox
+
+https://redrob-ctrl-jugaad.streamlit.app
+
+The sandbox accepts sample candidate datasets (≤100 candidates) and demonstrates the complete deterministic ranking pipeline.

@@ -23,7 +23,7 @@ team_members:
 # Code and reproducibility
 # ============================================================================
 github_repo: "https://github.com/Nitish-0710/redrob-ctrl-jugaad"
-sandbox_link: ""
+sandbox_link: "https://redrob-ctrl-jugaad.streamlit.app/"
 
 reproduce_command: "python rank.py --candidates candidates.jsonl --out outputs/submission.csv"
 
