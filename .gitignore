@@ -1,0 +1,26 @@
+# Python Caches
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+.streamlit/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+ENV/
+env/
+
+# Large Datasets
+candidates.jsonl
+
+# Intermediate Caches & Local Data
+data/raw/
+data/interim/
+data/processed/
+
+# Diagnostic/Temporary Outputs
+outputs/submission_preview.csv
+outputs/submission_validation.md
+outputs/final_submission_report.md
+outputs/top100_explainability_audit.md

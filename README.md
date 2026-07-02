@@ -16,7 +16,7 @@ Modern recruitment engines are plagued by search failures and profile manipulati
 
 The **Intelligent Candidate Discovery & Ranking Engine** resolves these issues by replacing unstructured keyword matching with a multi-dimensional, structured profiling architecture. It streams and converts deeply nested, raw candidate JSON records into 62 strongly-typed engineering features across 8 thematic categories. A hierarchical capability taxonomy groups tooling lists into coherent mathematical vectors, while an anti-fraud validation pipeline detects and penalizes suspicious profile behaviors.
 
-By formulating ranking as a deterministic weighted linear combination scaled by a multiplicative trust multiplier, the system balances technical expertise, career seniority, and verified engagement. Crucially, the system bypasses non-deterministic language model APIs to process the entire 100,000-candidate dataset on a single CPU core in approximately **35 seconds**. The result is a highly auditable, transparent ranking engine that outputs a sorted submission file enriched with factual, concise recruiter reasoning.
+By formulating ranking as a deterministic weighted linear combination scaled by a multiplicative trust multiplier, the system balances technical expertise, career seniority, and verified engagement. Crucially, the system bypasses non-deterministic language model APIs to process the entire 100,000-candidate dataset on a single CPU core in approximately **2 minutes and 10 seconds**. The result is a highly auditable, transparent ranking engine that outputs a sorted submission file enriched with factual, concise recruiter reasoning.
 
 ---
 
@@ -580,6 +580,15 @@ The pipeline generates several diagnostic and validation artifacts in the `outpu
 
 The final execution on the full dataset of 100,000 candidates generated the following metrics:
 
+### Performance Verification Summary
+* **Runtime**: 2m 10s
+* **Peak RSS RAM**: 0.11 GB
+* **Candidates Processed**: 100,000 
+* **JSON Parsing Errors**: 0
+* **CPU only**: Yes
+* **External APIs**: No
+* **Submission Valid**: Yes
+
 ### Score Distribution Metrics
 | Range | Candidates | % of Dataset | Interpretation |
 |---|---|---|---|
@@ -615,14 +624,14 @@ The top 10 candidates discovered by the system show high technical alignment and
 
 ### 1. No LLM APIs
 We bypassed generative AI models for candidate scoring. 
-* **Speed**: Processing 100k records via LLM API calls would take days and cost thousands of dollars; our deterministic parser processes the pool in **35 seconds**.
+* **Speed**: Processing 100k records via LLM API calls would take days and cost thousands of dollars; our deterministic parser processes the pool in **under 3 minutes on CPU**.
 * **Factual Consistency**: LLMs are prone to hallucinating candidate achievements and cannot guarantee reproducible scores.
 
 ### 2. Multiplicative Trust Penalties
 Rather than using a subtractive penalty, we scaled raw scores using a multiplicative trust multiplier. This ensures that candidates with excellent technical profiles but high fraud indicators (e.g., duplicate full-time jobs) are penalized and dropped from the top ranks.
 
 ### 3. CPU-Only Execution
-The code is built using Python's standard library libraries and pandas, running efficiently on generic cloud CPU instances without requiring specialized GPU hardware.
+The code is built using Python's standard library and pandas, running efficiently on generic cloud CPU instances without requiring specialized GPU hardware.
 
 ---
 
@@ -644,12 +653,17 @@ Follow these steps to run the pipeline and generate the submission files:
 ### 1. Environment Setup
 The pipeline runs on Python 3.8+ with minimal external dependencies. Install pandas and pyarrow for I/O operations:
 
+#### Linux
 ```bash
-# Create a virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+source venv/bin/activate 
+pip install -r requirements.txt
+```
 
-# Install dependencies
+#### Windows
+```cmd
+python -m venv venv
+venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -661,14 +675,43 @@ python run_tests_unittest.py
 ```
 
 ### 3. Execute the Scoring Pipeline
-Run the builder to stream the dataset, score candidates, and generate the final output files:
+Run the ranking engine to stream the dataset, score candidates, validate results, and generate the final output files:
 
-```bash
-# Execute the pipeline
-python src/submission/builder.py
+### Windows
+```cmd
+python rank.py --candidates candidates.jsonl --out outputs/submission.csv
 ```
 
-This generates all outputs in `outputs/` and confirms submission validation formatting.
+### Linux / macOS
+```bash
+python rank.py \
+    --candidates candidates.jsonl \
+    --out outputs/submission.csv
+```
+
+This will run the scoring model, perform compliance checks, write the results to `outputs/submission.csv` (and a preview to `outputs/submission_preview.csv`), and output the final validation report.
 
 ---
 
+## 📦 Submission Deliverables
+
+This repository contains all artifacts required for the India.Runs 2026 submission.
+
+- ✅ rank.py (single reproducible entry point)
+- ✅ submission_metadata.yaml
+- ✅ outputs/submission.csv
+- ✅ app.py (Streamlit sandbox)
+- ✅ README.md
+- ✅ requirements.txt
+
+--- 
+
+## Sandbox
+
+A lightweight Streamlit sandbox is included for demonstration.
+
+The sandbox accepts sample JSON/JSONL datasets (≤100 candidates), executes the same deterministic ranking pipeline, and produces a downloadable ranked CSV.
+
+The complete 100,000-candidate evaluation is performed locally using:
+
+python rank.py --candidates candidates.jsonl --out outputs/submission.csv

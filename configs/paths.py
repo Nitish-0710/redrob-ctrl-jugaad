@@ -12,7 +12,10 @@ from pathlib import Path
 PROJECT_ROOT: Path = Path(__file__).resolve().parent.parent
 
 # ── Raw challenge data (candidates.jsonl lives here) ─────────────────────────
-CHALLENGE_DATA_DIR: Path = PROJECT_ROOT.parent   # sibling of project/
+if (PROJECT_ROOT / "candidates.jsonl").exists():
+    CHALLENGE_DATA_DIR: Path = PROJECT_ROOT
+else:
+    CHALLENGE_DATA_DIR: Path = PROJECT_ROOT.parent   # fallback to sibling/parent of project
 
 CANDIDATES_JSONL:   Path = CHALLENGE_DATA_DIR / "candidates.jsonl"
 SAMPLE_CANDIDATES:  Path = CHALLENGE_DATA_DIR / "sample_candidates.json"

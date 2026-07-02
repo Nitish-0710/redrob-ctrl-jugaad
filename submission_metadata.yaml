@@ -1,0 +1,70 @@
+# Redrob Hackathon — Submission Metadata
+# Ctrl + Jugaad final submission declaration file
+
+# ============================================================================
+# Team identity
+# ============================================================================
+team_name: "Ctrl + Jugaad"
+
+primary_contact:
+  name: "Nitish Sahu"
+  email: "nitish.sahu24@vit.edu"
+  phone: "+91-8108586456"
+
+team_members:
+  - name: "Nitish Sahu"
+    email: "nitish.sahu24@vit.edu"
+    role: "ML Engineer"
+  - name: "Pranav Raut"
+    email: "pranav.raut24@vit.edu"
+    role: "Data Engineer"
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "https://github.com/Nitish-0710/redrob-ctrl-jugaad"
+sandbox_link: ""
+
+reproduce_command: "python rank.py --candidates candidates.jsonl --out outputs/submission.csv"
+
+# ============================================================================
+# Compute environment
+# ============================================================================
+compute:
+  platform: "Local Windows Box"
+  cpu_cores: 12
+  ram_gb: 16
+  python_version: "3.13.x"
+  os: "Windows 11"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+ai_tools_used:
+  - "ChatGPT"
+  - "Gemini"
+  - "Claude"
+  - "GitHub Copilot"
+
+ai_usage_summary: |
+  Used ChatGPT for architecture discussions, workflow planning, documentation refinement, and submission preparation. Used Gemini for code optimization and refactoring. Used Claude for code review and structural audits. Used GitHub Copilot for code completion. No external AI service is used during candidate parsing, scoring, ranking, or reasoning generation.
+
+# ============================================================================
+# Approach summary
+# ============================================================================
+methodology_summary: |
+  Multi-dimensional heuristic ranking engine for Senior AI Engineer candidates. Transforms nested JSON schemas into a flat FeatureVector of 62 engineered features. Uses an advanced 10-group skill taxonomy and 5-stage pipeline completeness check to identify search specialists. Incorporates a forensic trust layer to flag salary inversions, date paradoxes, and inflated YoE, scaling the base score via a multiplicative trust multiplier. Ensures deterministic CPU-only execution within the competition runtime constraints (verified at approximately 2 minutes 10 seconds for the full 100,000-candidate dataset).
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
