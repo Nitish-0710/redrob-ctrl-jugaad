@@ -272,7 +272,7 @@ graph TD
 
 ## 📂 Folder Structure
 
-The project code is organized as a clean, production-grade package inside the `merged/` directory:
+The project code is organized as a clean package:
 
 ```text
 
