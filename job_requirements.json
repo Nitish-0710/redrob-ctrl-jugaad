@@ -1,0 +1,73 @@
+{
+    "role_title": "Senior AI Engineer",
+    "domains": {
+        "retrieval": true,
+        "ranking": true,
+        "recommendation": true,
+        "search": true,
+        "relevance": true,
+        "personalization": true,
+        "evaluation": true,
+        "machine_learning": true,
+        "nlp": true,
+        "production_ml": true
+    },
+    "experience": {
+        "minimum_years": 3.0,
+        "preferred_min_years": 5.0,
+        "preferred_max_years": 12.0,
+        "seniority_indicators": [
+            "senior",
+            "lead",
+            "staff",
+            "principal",
+            "sr.",
+            "sr"
+        ]
+    },
+    "skills": {
+        "required_skills": [
+            "Python",
+            "Machine Learning",
+            "Deep Learning",
+            "NLP"
+        ],
+        "preferred_skills": [
+            "PyTorch",
+            "Transformers",
+            "LLMs",
+            "Vector Databases",
+            "MLOps",
+            "Computer Vision",
+            "Statistics"
+        ]
+    },
+    "behavioral": {
+        "open_to_work": true,
+        "availability_days_max": 30,
+        "recruiter_engagement": true
+    },
+    "education": {
+        "degree_preferences": [
+            "B.Tech",
+            "M.Tech",
+            "MS",
+            "PhD"
+        ],
+        "field_preferences": [
+            "Computer Science",
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Data Science",
+            "Mathematics",
+            "Statistics"
+        ]
+    },
+    "location": {
+        "preferred_locations": [
+            "India",
+            "Remote"
+        ],
+        "relocation_preferred": true
+    }
+}
